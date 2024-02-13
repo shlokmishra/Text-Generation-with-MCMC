@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\quotes}[1]{``#1''}
 
 
 \title{MCMC in Text Generation}
@@ -161,7 +162,7 @@ of the underlying discrete space
 \subsection{Faithfulness of Gradient-based Text Samplers}
 Consider the setting of sampling a sequence of $N$ words $\boldsymbol{w} = w_1 \cdots w_N \in \sum^{N}$ from an energy-based sequence model. We denote corresponding word embeddings $\boldsymbol{x} = (\boldsymbol{x}_1, \cdots, \boldsymbol{x}_N) \in \mathcal{X} \defeq \mathcal{V}^N \subset \mathbb{R}^{Nd}$ where $\mathcal{V} \subset \mathbb{R}^d$ is the disrecrete set of word embeddings.
 
-\subsubsection{Constrained Decoding with Langevin Dynamics (COLD)} \cite[text]{cold}
+\section{Constrained Decoding with Langevin Dynamics (COLD)} \cite[COLD]{cold}
 This is a decoding approach that treats text generation as sampling from an energy-based distribution, allowing for flexibly composing constraints
 based on the task at hand. COLD decoding generates text by sampling from an EBM defined over a
 sequence of “soft” tokens using Langevin dynamics, then maps the continuous sample into discrete,
@@ -176,32 +177,157 @@ makes use of the gradient $\nabla_{\boldsymbol{y}} E(\boldsymbol{y})$. However, 
 $\nabla_{\boldsymbol{y}} E(\boldsymbol{y})$ is not well-defined. As a result, we perform Langevin dynamics with an energy defined on
 a sequence of continuous token vectors.
 
-Instead of defining the energy function on discrete tokens, we define the energy function on a sequence of continuous vectors $\tilde{\boldsymbol{y}} = (\tilde{\boldsymbol{y}}_1, \ldots, \tilde{\boldsymbol{y}}_T)$, which we call a soft sequence. Each position in the soft sequence is a vector $\tilde{\boldsymbol{y}}_t \in \mathbb{R}^V$, where $V$ is the vocabulary size, and each element $\tilde{\boldsymbol{y}}_t(v) \in \mathbb{R}$ corresponds to the logit of word $v$ in the vocabulary. 
+Instead of defining the energy function on discrete tokens, we define the energy function on a sequence of continuous vectors $\tilde{\boldsymbol{y}} = (\tilde{\boldsymbol{y}}_1, \ldots, \tilde{\boldsymbol{y}}_T)$, which we call a soft sequence. Each position in the soft sequence is a vector $\tilde{\boldsymbol{y}}_t \in \mathbb{R}^V$, where $V$ is the vocabulary size, and each element $\tilde{\boldsymbol{y}}_t(v) \in \mathbb{R}$ corresponds to the logit of word $v$ in the vocabulary.
 
-\textbf{Example:}
-Consider a vocabulary of three words: $\mathcal{V} = \{\text{cat}, \text{dog}, \text{bird}\}$.
-Let $\tilde{\boldsymbol{y}}_t = (2.5, -1.0, 0.8)$ represent the soft sequence at position $t$.
-Then:
-\begin{itemize}
-    \item $\tilde{y}_t(1) = 2.5$, indicating a high preference for "cat".
-    \item $\tilde{y}_t(2) = -1.0$, indicating a low preference for "dog".
-    \item $\tilde{y}_t(3) = 0.8$, indicating a moderate preference for "bird".
-\end{itemize}
+Let's consider a specific example to understand the concept of a soft sequence in the context of natural language processing (NLP), specifically in a text generation task using a neural network model.
+
+\newcommand{\quotes}[1]{``#1''}
+
+Imagine we are tasked with generating a text sequence one word at a time from a given vocabulary. For simplicity, let's assume our vocabulary consists of only four words: \quotes{the}, \quotes{cat}, \quotes{sat}, and \quotes{mat}. Thus, each position \(t\) in our output sequence will correspond to a soft sequence vector \(\tilde{y}_t\) with a dimension of 4, where each element represents the logit for one of the words in the vocabulary.
+
+At a certain timestep \(t\), the model generates the following logits in \(\tilde{y}_t\):
+
+\begin{center}
+    \begin{tabular}{l r}
+        \textbf{Word} & \textbf{Logit} \\
+        \hline
+        \quotes{the}  & 2              \\
+        \quotes{cat}  & 5              \\
+        \quotes{sat}  & 1              \\
+        \quotes{mat}  & -1             \\
+    \end{tabular}
+\end{center}
+
+Applying the softmax function to these logits gives us a probability distribution over our vocabulary:
+
+\begin{center}
+    \begin{tabular}{l p{2.5cm}} % Adjust the width as necessary
+        \textbf{Word} & \textbf{Probability after Softmax} \\
+        \hline
+        \quotes{the}  & 0.12                               \\
+        \quotes{cat}  & 0.79                               \\
+        \quotes{sat}  & 0.07                               \\
+        \quotes{mat}  & 0.02                               \\
+    \end{tabular}
+\end{center}
+
+
+
+The model predicts "cat" as the most likely next word with a probability of 0.79. The vector \([0.12, 0.79, 0.07, 0.02]\) is the soft sequence at time \(t\), representing a probability distribution over the vocabulary for the next word. This is a continuous representation, as opposed to selecting a single discrete word.
+
+This soft sequence allows the model to express uncertainty and preferences over the next word in a nuanced way, enabling gradient-based optimization methods to work effectively by providing a differentiable way to adjust the model's parameters based on how close the soft predictions are to the desired output. In the final step of generating text, the model might sample from this distribution or pick the word with the highest probability, depending on the specific application or generation goal.
 
 Taking the softmax of $\tilde{\boldsymbol{y}}_t$ yields a distribution over the vocabulary for position $t$, $\tilde{p}_t^\tau = \text{softmax}(\tilde{\boldsymbol{y}}_t/\tau)$. As $\tau \rightarrow 0$, $\tilde{p}_t^\tau$ becomes a one-hot vector, indicating a discrete token.
 
 By specifying an energy $E(\tilde{\boldsymbol{y}})$ on the soft sequence $\tilde{\boldsymbol{y}}$, we can use Langevin dynamics to obtain a sample. Specifically, the sampling is done by forming a Markov chain:
 \begin{equation}
-\tilde{\boldsymbol{y}}^{(n+1)} \leftarrow \tilde{\boldsymbol{y}}^{(n)} - \eta \nabla_{\tilde{\boldsymbol{y}}} E(\tilde{\boldsymbol{y}}^{(n)}) + \epsilon^{(n)},
-\label{eq:langevin}
+    \tilde{\boldsymbol{y}}^{(n+1)} \leftarrow \tilde{\boldsymbol{y}}^{(n)} - \eta \nabla_{\tilde{\boldsymbol{y}}} E(\tilde{\boldsymbol{y}}^{(n)}) + \epsilon^{(n)},
+    \label{eq:langevin}
 \end{equation}
 where $\eta > 0$ is the step size, and $\epsilon^{(n)} \in \mathcal{N}(0, \sigma)$ is the noise at iteration $n$. By adding the right amount of noise and annealing the step size, the procedure will converge to samples from the true distribution. That is, if we let $p^{(n)}$ be the distribution such that $\tilde{y}^{(n)} \sim p^{(n)}$, then as $n \rightarrow \infty$ and $\sigma \rightarrow 0$, we have $p^{(n)} \rightarrow p(\tilde{y}) := \exp\{-E(\tilde{y})\}/Z$. That is, the procedure ends up generating samples from the distribution induced by the energy function.
 
+\subsection{Constraints}
+\subsubsection{Soft Constraints}
+The soft fluency constraint is designed to promote fluency in generated text sequences by leveraging a pre-trained language model. The fluency of a sequence is evaluated based on how closely the generated soft sequence matches the distribution predicted by the language model. The constraint is mathematically represented as:
+
+\begin{equation}
+    f_{\overrightarrow{\text{LM}}}(\mathbf{\tilde{y}}) = \sum_{t=1}^{T} \sum_{v \in V} p_{\overrightarrow{\text{LM}}}(v|\mathbf{\tilde{y}}_{<t}) \log \text{softmax} (\mathbf{\tilde{y}}_t(v)),
+    \end{equation}
+    
+
+where:
+\begin{itemize}
+    \item \(f_{\overrightarrow{\text{LM}}}(\mathbf{\tilde{y}})\) is the fluency constraint for the soft sequence \(\mathbf{\tilde{y}}\),
+    \item \(T\) is the length of the soft sequence,
+    \item \(V\) is the vocabulary set,
+    \item \(p_{\overrightarrow{\text{LM}}}(v|\mathbf{\tilde{y}}_{<t})\) is the probability of the word \(v\) at position \(t\) predicted by the language model given the preceding soft tokens \(\mathbf{\tilde{y}}_{<t}\),
+    \item \(\mathbf{\tilde{y}}_t(v)\) is the logit for word \(v\) at position \(t\) in the soft sequence,
+    \item The \(\text{softmax}\) function is applied to \(\mathbf{\tilde{y}}_t(v)\) to convert logits into a probability distribution over the vocabulary for each position \(t\).
+\end{itemize}
+
+
+The inner summation \(\sum_{v \in V}\) computes the negative cross-entropy between the distribution predicted by the language model and the distribution represented by the soft sequence at each position \(t\). The outer summation \(\sum_{t=1}^{T}\) aggregates this measure across the entire sequence, ensuring that the generated sequence is fluent and coherent according to the language model's predictions.
+
+This constraint effectively encourages the generated sequence to be not only fluent but also contextually coherent, making it a powerful tool for generating high-quality, natural-sounding text.
+
+In the context of generating a sequence, \(T\) represents the length of the sequence being generated or evaluated. The knowledge of \(T\) beforehand depends on the specific generation task:
+
+\begin{itemize}
+    \item \textbf{Fixed-Length Generation:} For tasks where the desired output length is predetermined, \(T\) is known at the outset. This allows the generation process to be tailored to produce sequences that exactly meet the predefined length.
+
+    \item \textbf{Dynamic Generation:} In scenarios where the sequence ends based on specific criteria (like an end-of-sequence token), \(T\) is not fixed beforehand. Instead, it becomes known only as the generation process unfolds, with the sequence length adapting dynamically based on the content being generated.
+\end{itemize}
+
+\subsubsection{Future-token Prediction Constraint}
+In applications such as text infilling, the task involves predicting missing tokens within a given sequence, where certain future input tokens remain fixed and are known beforehand. These fixed future tokens should influence the updating of past positions to ensure coherence and contextual relevance throughout the sequence.
+
+For instance, consider the task of updating the missing word in the sentence ``The \_\_ has eight legs.'' It is essential that the predicted word for the blank space not only fits grammatically but also semantically with the future tokens, in this case, ``has eight legs.''
+
+To address this requirement, we introduce a \emph{future-token prediction constraint}. This constraint is designed to adjust the soft tokens in the sequence to maximize the likelihood of the known future input tokens, denoted as \(x_r\). The constraint is mathematically represented as follows:
+
+\begin{equation}
+    f_{pred}(\mathbf{\tilde{y}}; \mathbf{x_r}) = \sum_{k=1}^{K} \log {p}_{\overrightarrow{LM}}({x_{r,k}}|\mathbf{\tilde{y}}, {\mathbf{x}_{r,<k}}),
+\end{equation}
+
+where:
+\begin{itemize}
+    \item \(\mathbf{K}\) is the length of the sequence \(\mathbf{x_r}\),
+    \item \(p_{\mathbf{\overrightarrow{LM}}}(x_{r,k}|\mathbf{\tilde{y}}, \mathbf{x}_{r,<k})\) represents the probability, predicted by the underlying language model (\(\mathbf{LM}\)), of the future token \(x_{r,k}\) given the soft sequence \(\mathbf{\tilde{y}}\) and all preceding future tokens \(\mathbf{x}_{r,<k}\).
+\end{itemize}
+
+
+
+In essence, this constraint adjusts the soft sequence \(\tilde{y}\) such that the underlying language model is more likely to predict the future tokens \(x_r\) correctly after being presented with \(\tilde{y}\). This ensures that the generated or updated sequence is not only grammatically correct but also contextually coherent with the fixed future tokens.
+
+\subsubsection{N-gram Similarity Constraint}
+
+In many constrained generation scenarios, requirements are placed on the wording and expression of the generated text sequences. For example, lexically constrained generation tasks require the presence of certain keywords within the text samples, while tasks related to counterfactual reasoning or text editing necessitate that the generated text retains the essence of a reference sequence.
+
+To address these requirements, we introduce an \emph{n-gram similarity constraint}. This constraint is designed to favor sequences that exhibit overlap with a reference sequence \(y^*\) at the n-gram level. The constraint is mathematically expressed as follows:
+
+\begin{equation}
+    f_{\text{sim}}(\tilde{\mathbf{y}}; \mathbf{y}^*) = \text{ngram-match}(\tilde{\mathbf{y}}, \mathbf{y}^*),
+\end{equation}
+
+where \(\text{ngram-match}(\cdot, \cdot)\) denotes a recent differentiable n-gram matching function, which serves as a differentiable approximation to the BLEU-n metric. This function is capable of quantifying the similarity between the generated sequence \(\tilde{y}\) and the reference sequence \(y^*\) based on their shared n-grams.
+
+When \(n = 1\) and \(y^*\) represents a sequence of keywords, this constraint effectively enforces that \(\tilde{y}\) assigns higher values to the specified keywords (1-grams), ensuring their presence in the generated text. Conversely, when \(n\) is larger and \(y^*\) is a more extensive reference sequence, the constraint encourages \(\tilde{y}\) to resemble \(y^*\) more closely by assigning high values to tokens that constitute n-grams found within \(y^*\).
+
+This n-gram similarity constraint plays a critical role in ensuring that generated text sequences adhere to specified lexical requirements or retain significant elements of reference sequences, thereby enhancing the relevance and coherence of the generated content in accordance with the task-specific constraints.
+
+\subsection{From Soft to Discrete and Fluent Text}
+
+Upon obtaining a soft sequence sample \(\mathbf{\tilde{y}}\) from running Langevin dynamics, our goal is to map this soft sequence to a discrete text sequence. This discrete sequence is considered as the output of COLD decoding. A straightforward approach for this mapping would involve selecting the most-likely token at each position \(t\), defined as \(y_t = \arg\max_v \mathbf{\tilde{y}}_t(v)\). However, this direct method might lead to text that suffers from fluency issues, even when a soft fluency constraint is employed. This is due to the presence of competing constraints that may compromise fluency for satisfying other criteria.
+
+To address these challenges and ensure the fluency of the resulting text, we incorporate the underlying language model (e.g., \( \mathbf{GPT2-XL} \)) as a "guardian" in the process of obtaining the discrete sequence. Specifically, for each position \(t\), the language model is used to produce the top-\(k\) most-likely candidate tokens based on its generation distribution, conditional on the preceding tokens. We denote this set of candidates as \(V_{k_t}\).
+
+From these top-\(k\) candidates, we then select the most likely token according to the soft sample \(\mathbf{\tilde{y}}\):
+
+\begin{equation}
+y_t = \arg\max_{v \in V_{k_t}} \mathbf{\tilde{y}}_t(v).
+\end{equation}
+
+This approach is referred to as "top-k filtering." Text generated through this method tends to exhibit higher fluency, as each token is among the top-\(k\) most probable choices according to the language model. Additionally, to facilitate the satisfaction of specific constraints (e.g., n-gram similarity), we may expand the candidate set \(V_{k_t}\) to include tokens that are critical for meeting those constraints, such as in tasks involving abductive reasoning and lexically constrained decoding.
+
+\subsection{Implementation of COLD Decoding}
+
+\subsubsection*{Sample-and-Select}
+COLD decoding facilitates the generation of multiple text samples from the distribution induced by the energy function \(E(\mathbf{\tilde{y}})\). Based on the specific requirements of the task, these samples can either be presented as a set of outputs or a single sequence can be selected from the set according to certain criteria (e.g., different energy terms) for tasks as demonstrated in our experiments. This "sample-and-select" approach distinguishes itself from deterministic constrained decoding methods, which focus on optimizing a single sequence, and finds broad application across various generation settings.
+
+\subsubsection*{Initialization}
+The soft sequence \(\mathbf{\tilde{y}}\) is initialized using greedy decoding with the language model \(p_{\text{LM}}\) to generate initial output logits. Preliminary experiments indicate that the choice of initialization strategy has a limited impact on the generation results.
+
+\subsubsection*{Noise Schedule}
+During each iteration of Langevin dynamics, noise \(\boldsymbol{\epsilon}^{(n)} \sim \mathcal{N}(0, \sigma^{(n)})\) is added to the gradient. We employ a gradually decreasing schedule for \(\sigma^{(n)}\) across iterations, transitioning the decoding process from exploration to optimization. Typically, the noise schedule sets or reduces \(\sigma\) to \(\{1, 0.5, 0.1, 0.05, 0.01\}\) at iterations \(\{0, 50, 500, 1000, 1500\}\), respectively.
+
+\subsubsection*{Long Sequences}
+COLD decoding inherently produces a fixed-length sequence \(\mathbf{y} = (y_1, \ldots, y_T)\). To generate longer sequences, particularly in cases where \(y_T\) does not signify the conclusion of a sentence, we utilize \(p_{\text{LM}}\) for a continuation of \(\mathbf{y}\) using greedy decoding.
 
 
 
 
-\subsubsection{Multiple Constraints from LMs using Langevin Dynamics (MuCoLa)} \cite[]{mucola}
+
+\section{Multiple Constraints from LMs using Langevin Dynamics (MuCoLa)} \cite[]{mucola}
 This work defines a Markov Chain using gradients of the energy function with respect to token embeddings of the output sequence. Stochasticity is introduced into the process to generate diverse samples, achieved by modifying the gradients with additive noise, a process known as Langevin Dynamics. The energy function is operationalized by setting each constraint to be smaller than a threshold, and expressing it as a Lagrangian—with language model likelihood as the primary objective. This approach allows for the combination of any number of constraints of varying scales without the need for tuning their weights. It is demonstrated that low-energy solutions under this definition are true samples from the LM distribution. This algorithm is referred to as \textbf{MuCoLa}, an acronym for sampling with multiple constraints from LMs using Langevin Dynamics.
 
 Let \( P(\boldsymbol{y} | \boldsymbol{x}; \theta) \) model the conditional probability distribution of an output token sequence \( \boldsymbol{y} = (y_1, \ldots, y_N) \), given an optional input token sequence \( \boldsymbol{x} = (x_1, \ldots, x_M) \) where \( x_m, y_n \in V \). We are interested in constrained sampling from \( P \)—finding output sequences \( \boldsymbol{y} \) that have a high probability under \( P \) while minimizing a given set of constraint functions: \(\{f_1, \ldots, f_C\}\). We assume that each \( f_i : ([\boldsymbol{x}], \boldsymbol{y}) \rightarrow \mathbb{R} \) is defined such that a lower value of \( f_i \) implies that the output better satisfies the constraint.
@@ -216,7 +342,7 @@ where \( \text{Proj}_{\boldsymbol{E}}(\hat{e}) = \arg\min_{e \in \boldsymbol{E}}
 \subsection{Toy Example: Energy-Based Language Model}
 Consider a toy energy-based language model (LM) over a sequence of \(N\) tokens, with a binary vocabulary and a one-dimensional embedding. Let the vocabulary be \(\mathcal{V} = \Sigma = \{-1, +1\}\).
 
-We define an energy function in the form: 
+We define an energy function in the form:
 \[ U(\boldsymbol{x}) = - \beta \left(\frac{1}{2}\boldsymbol{x}^T A \boldsymbol{x} + \boldsymbol{b}^T \boldsymbol{x}\right) \]
 where \(\boldsymbol{x} \in \mathcal{V}^N\). The probability distribution of the model is given by:
 \[ \pi_{toy}(\boldsymbol{x}) \propto \exp(-U(\boldsymbol{x})) \]
