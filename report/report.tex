@@ -323,8 +323,69 @@ During each iteration of Langevin dynamics, noise \(\boldsymbol{\epsilon}^{(n)} 
 \subsubsection*{Long Sequences}
 COLD decoding inherently produces a fixed-length sequence \(\mathbf{y} = (y_1, \ldots, y_T)\). To generate longer sequences, particularly in cases where \(y_T\) does not signify the conclusion of a sentence, we utilize \(p_{\text{LM}}\) for a continuation of \(\mathbf{y}\) using greedy decoding.
 
+\subsection{Implementation Details}
+
+The implementation involves initializing parameters and the noise term, setting up the optimizer and scheduler, and executing the optimization loop as follows:
+
+\begin{verbatim}
+# Initialization
+y_logits = init_logits
+epsilon = torch.nn.Parameter(torch.zeros_like(y_logits))
+
+# Optimizer and Scheduler Setup
+if args.prefix_length > 0:
+    optim = torch.optim.Adam([epsilon, prefix_logits], lr=args.stepsize)
+else:
+    optim = torch.optim.Adam([epsilon], lr=args.stepsize)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, step_size=args.stepsize_iters,
+                                             gamma=args.stepsize_ratio)
+
+# Optimization Loop
+optim.zero_grad()
+y_logits_ = y_logits + epsilon
+# Compute loss in a function (not shown)
+if iter < args.num_iters - 1:
+    loss.backward() # Compute gradients
+    optim.step() # Update parameters
+    scheduler.step()  # Update learning rate
+    last_lr = scheduler.get_last_lr()[0]
+\end{verbatim}
+
+This implementation iteratively updates the parameters to minimize the loss function, incorporating noise to aid in exploring the parameter space. The use of an adaptive learning rate scheduler and the Adam optimizer facilitates efficient and effective optimization.
+
+\subsection{Loss Computation Overview}
+
+The loss computation for models operating in counterfactual, abductive, and lexical modes involves multiple components, including left-to-right (L2R) loss, right-to-left (R2L) loss, and constraint losses. The total loss is a combination of these components, weighted appropriately according to the model configuration.
+
+\subsubsection{Loss Components}
+
+\paragraph{L2R Loss:} The L2R loss is computed using a soft negative log-likelihood function, applied to the model's forward pass logits, after applying a top-k filter and adjusting by an output logits temperature.
+
+\paragraph{R2L Loss:} The R2L loss computation varies based on the mode:
+\begin{itemize}
+    \item In counterfactual mode, it involves reversing the model's logits, processing them through the backward model, and computing the soft NLL against the adjusted and reversed logits.
+    \item In abductive and lexical modes, the logits are flipped, processed through a backward model, adjusted for repetition, and the soft NLL is computed against the filtered and temperature-adjusted logits.
+\end{itemize}
+
+\paragraph{Constraint Loss:} Depending on the mode:
+\begin{itemize}
+    \item Counterfactual mode utilizes a BLEU-like loss computed against a set of n-grams.
+    \item Abductive and lexical modes combine a cross-entropy loss and a BLEU-like loss, with the latter weighted by a specific factor.
+\end{itemize}
+
+\subsubsection{Total Loss Computation}
+
+The total loss is calculated as a weighted sum of the L2R and R2L losses, alongside the constraint loss, each adjusted by specific weights reflecting the importance of each component and the overall model configuration. The formula for the total loss is:
+
+\begin{multline*}
+    \text{loss} = (1.0 - \text{args.constraint\_weight}) \times \text{args.lr\_nll\_portion} \times \text{lr\_nll\_loss} \\
+    + \text{args.constraint\_weight} \times (1 - \text{args.lr\_nll\_portion}) \times \text{rl\_nll\_loss} \\
+    + \text{args.constraint\_weight} \times \text{c\_loss}
+\end{multline*}
 
 
+
+This loss is then averaged across the batch for optimization.
 
 
 \section{Multiple Constraints from LMs using Langevin Dynamics (MuCoLa)} \cite[]{mucola}
@@ -363,6 +424,12 @@ The reasons for choosing this model are:
     \item The model allows for exact computation of the distribution for small \(N\).
     \item The binary vocabulary simplifies the computation of the transition matrix of MuCoLa exactly and the stationary distribution as well.
 \end{enumerate}
+
+\section{Introduction}
+
+This document explains the implementation of a stochastic optimization algorithm inspired by the Langevin equation. The algorithm is designed to iteratively update parameters to minimize a loss function, incorporating noise to potentially improve exploration of the parameter space.
+
+
 
 \section{Results}
 
