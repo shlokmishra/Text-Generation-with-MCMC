@@ -1,0 +1,21 @@
+    # Initialization
+y_logits = init_logits
+epsilon = torch.nn.Parameter(torch.zeros_like(y_logits))
+
+# Optimizer and Scheduler Setup
+if args.prefix_length > 0:
+    optim = torch.optim.Adam([epsilon, prefix_logits], lr=args.stepsize)
+else:
+    optim = torch.optim.Adam([epsilon], lr=args.stepsize)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, step_size=args.stepsize_iters,
+                                             gamma=args.stepsize_ratio)
+
+# Optimization Loop
+optim.zero_grad()
+y_logits_ = y_logits + epsilon
+# Compute loss in a function (not shown)
+if iter < args.num_iters - 1:
+    loss.backward()  # Compute gradients
+    optim.step()  # Update parameters
+    scheduler.step()  # Update learning rate
+    last_lr = scheduler.get_last_lr()[0]

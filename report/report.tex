@@ -1,3 +1,5 @@
+% !TeX program = pdflatex -shell-escape
+
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
@@ -45,8 +47,6 @@
 
 
 
-\section{Literature Review}
-
 \subsection{Word Embeddings}
 
 Word embeddings are a numerical representation technique for words, utilized in the domain of natural language processing. The core concept resembles multi-dimensional scaling, where words are represented as points within a high-dimensional vector space. The spatial arrangement in this space is determined through the analysis of a large text corpus, ensuring that semantic relationships and contextual similarities among words are effectively captured.
@@ -61,67 +61,7 @@ The process of learning these embeddings is akin to solving a statistical estima
 
 Applications of word embeddings are vast, extending to tasks such as clustering semantically similar words, solving analogies, or serving as input features for various predictive models. By transforming words into a continuous numerical form, embeddings facilitate the application of statistical analysis and machine learning algorithms to textual data, enabling a deeper understanding of language semantics.
 
-\subsection{Energy Based Models (EBMs)} \cite[Predicting Structured Data]{Pred-structured-data}
-Energy-based models (EBMs) capture dependencies between variables by associating a scalar energy to each conﬁguration of the variables. Inference consists in clamping the value of observed variables and ﬁnding conﬁgurations of the remaining
-variables that minimize the energy. Learning consists in ﬁnding an energy function
-in which observed conﬁgurations of the variables are given lower energies than
-unobserved ones. \\
-\textit{Inference}, i.e.,
-making a prediction or decision, consists in setting the value of observed variables
-and ﬁnding values of the remaining variables that minimize the energy. \textit{Learning}
-consists in ﬁnding an energy function that associates low energies to correct values
-of the remaining variables, and higher energies to incorrect values. A \textit{loss functional},
-minimized during learning, is used to measure the quality of the available energy
-functions.
 
-Training an EBM consists in finding an energy function that produces the best $Y$
-for any $X$. The search for the best energy function is performed within a family of
-energy functions $\mathcal{E}$ indexed by a parameter $W$
-$$\mathcal{E} = \{E(W,Y,X): W \in \mathcal{W}\}$$
-
-Given an energy function $E(\boldsymbol{y}) \in \mathcal{R}$, an EBM is defined as a Boltzmann distribution $p(\boldsymbol{y}) = exp\{-E(\boldsymbol{y}) /Z\}$ where $Z = \sum_{\boldsymbol{y}} exp\{-E(\boldsymbol{y})\}$ is the normalization constant. \\
-
-\subsection{Langevin Dynamics}
-Langevin dynamics is a stochastic process that is often used in statistical physics and computational chemistry to simulate the behavior of particles in a potential field. It combines deterministic motion under a potential with random motion due to thermal fluctuations. This approach is particularly useful for modeling systems at finite temperatures.
-
-The Langevin equation describes the motion of a particle of mass \( m \) under the influence of a potential field and a frictional force, along with a random force representing thermal fluctuations. The equation can be written as:
-
-\[ m \frac{d^2\mathbf{x}}{dt^2} = -\nabla U(\mathbf{x}) - \gamma \frac{d\mathbf{x}}{dt} + \sqrt{2\gamma k_B T} \mathbf{R}(t) \]
-
-\begin{itemize}
-    \item \( \mathbf{x} \) is the position of the particle.
-    \item \( \frac{d^2\mathbf{x}}{dt^2} \) is the acceleration of the particle.
-    \item \( U(\mathbf{x}) \) is the potential energy as a function of position.
-    \item \( \nabla U(\mathbf{x}) \) represents the force due to the potential field.
-    \item \( \gamma \) is the friction coefficient.
-    \item \( \frac{d\mathbf{x}}{dt} \) is the velocity of the particle.
-    \item \( k_B \) is the Boltzmann constant.
-    \item \( T \) is the temperature of the system.
-    \item \( \mathbf{R}(t) \) is a random force with Gaussian distribution, representing thermal fluctuations.
-\end{itemize}
-
-The Langevin equation is a way to describe the dynamics of particles that are small enough to be influenced by thermal noise, such as molecules in a fluid. It's a cornerstone of molecular dynamics simulations and is used to explore the properties of materials and biological systems at the atomic and molecular levels.
-
-Stochastic Gradient Langevin Dynamics (SGLD) is an algorithm that combines aspects of stochastic gradient descent (SGD) with Langevin dynamics, a method from statistical physics. SGLD is particularly useful in the context of Bayesian learning and deep learning, where it is used for sampling from the posterior distribution of model parameters.
-
-The basic idea behind SGLD is to add a noise term to the gradient updates in SGD, where this noise term is scaled in a way that approximates sampling from the true posterior distribution under certain conditions. This allows SGLD to not only find a point estimate of the model parameters (like standard SGD) but also to explore the parameter space more broadly, providing information about the uncertainty in the model parameters.
-
-The update rule for SGLD can be written as:
-
-\[ \theta_{t+1} = \theta_t - \frac{\epsilon_t}{2} \left( \nabla_\theta \log p(\theta_t) + \frac{N}{n} \sum_{i=1}^n \nabla_\theta \log p(y_{i}|\theta_t) \right) + \eta_t, \]
-
-where:
-\begin{itemize}
-    \item \( \theta_t \) is the parameter vector at iteration \( t \).
-    \item \( \epsilon_t \) is the learning rate at iteration \( t \).
-    \item \( \nabla_\theta \log p(\theta_t) \) is the gradient of the log prior distribution with respect to the parameters.
-    \item \( N \) is the total number of data points.
-    \item \( n \) is the number of data points used in the stochastic gradient estimation (batch size).
-    \item \( \nabla_\theta \log p(y_i|\theta_t) \) is the gradient of the log likelihood for a data point \( y_i \) given the parameters.
-    \item \( \eta_t \) is a noise term sampled from a normal distribution with mean 0 and variance \( \epsilon_t \), \( \eta_t \sim \mathcal{N}(0, \epsilon_t) \).
-\end{itemize}
-
-This update rule enables SGLD to balance exploration and exploitation in the parameter space, allowing for more robust and informative inference in complex models.
 
 \section{Methodology} \cite[]{du2023principled}
 Pretrained language models have demonstrated impressive abilities in generating fluent texts by factorizing a string-values distribution $p_{LM}(\boldsymbol{x}) (\boldsymbol{w} \in \sum^*)$ over some vocabulory $\sum$ with local normalization:
@@ -162,6 +102,20 @@ of the underlying discrete space
 \subsection{Faithfulness of Gradient-based Text Samplers}
 Consider the setting of sampling a sequence of $N$ words $\boldsymbol{w} = w_1 \cdots w_N \in \sum^{N}$ from an energy-based sequence model. We denote corresponding word embeddings $\boldsymbol{x} = (\boldsymbol{x}_1, \cdots, \boldsymbol{x}_N) \in \mathcal{X} \defeq \mathcal{V}^N \subset \mathbb{R}^{Nd}$ where $\mathcal{V} \subset \mathbb{R}^d$ is the disrecrete set of word embeddings.
 
+\section{Langevin MCMC}
+
+The core of the Langevin MCMC is the Langevin equation, which is a stochastic differential equation that describes the evolution of a particle in a potential field with some form of friction or resistance, and subject to random fluctuations. In the context of MCMC, the Langevin equation can be discretized to update the chain's state as follows:
+
+\begin{equation}
+x_{t+1} = x_t + \frac{\epsilon^2}{2} \nabla \log p(x_t) + \epsilon Z_t
+\end{equation}
+
+where $x_t$ is the state at time $t$, $\epsilon$ is the step size, $\nabla \log p(x_t)$ is the gradient of the log-target distribution at $x_t$, and $Z_t$ is a standard Gaussian random variable. The first term in the update represents a deterministic drift towards higher probability regions, while the second term introduces randomness to explore the state space.
+
+Langevin MCMC is particularly useful in scenarios where the target distribution is known up to a normalization constant, which is common in Bayesian inference problems. It has been successfully applied in various fields such as machine learning, statistical physics, and computational biology, among others.
+
+Langevin MCMC provides an efficient and effective means of sampling from complex, high-dimensional distributions by leveraging gradient information. This leads to faster convergence compared to traditional MCMC methods, making it a valuable tool in the arsenal of statistical and machine learning techniques.
+
 \section{Constrained Decoding with Langevin Dynamics (COLD)} \cite[COLD]{cold}
 This is a decoding approach that treats text generation as sampling from an energy-based distribution, allowing for flexibly composing constraints
 based on the task at hand. COLD decoding generates text by sampling from an EBM defined over a
@@ -180,8 +134,6 @@ a sequence of continuous token vectors.
 Instead of defining the energy function on discrete tokens, we define the energy function on a sequence of continuous vectors $\tilde{\boldsymbol{y}} = (\tilde{\boldsymbol{y}}_1, \ldots, \tilde{\boldsymbol{y}}_T)$, which we call a soft sequence. Each position in the soft sequence is a vector $\tilde{\boldsymbol{y}}_t \in \mathbb{R}^V$, where $V$ is the vocabulary size, and each element $\tilde{\boldsymbol{y}}_t(v) \in \mathbb{R}$ corresponds to the logit of word $v$ in the vocabulary.
 
 Let's consider a specific example to understand the concept of a soft sequence in the context of natural language processing (NLP), specifically in a text generation task using a neural network model.
-
-\newcommand{\quotes}[1]{``#1''}
 
 Imagine we are tasked with generating a text sequence one word at a time from a given vocabulary. For simplicity, let's assume our vocabulary consists of only four words: \quotes{the}, \quotes{cat}, \quotes{sat}, and \quotes{mat}. Thus, each position \(t\) in our output sequence will correspond to a soft sequence vector \(\tilde{y}_t\) with a dimension of 4, where each element represents the logit for one of the words in the vocabulary.
 
@@ -232,8 +184,8 @@ The soft fluency constraint is designed to promote fluency in generated text seq
 
 \begin{equation}
     f_{\overrightarrow{\text{LM}}}(\mathbf{\tilde{y}}) = \sum_{t=1}^{T} \sum_{v \in V} p_{\overrightarrow{\text{LM}}}(v|\mathbf{\tilde{y}}_{<t}) \log \text{softmax} (\mathbf{\tilde{y}}_t(v)),
-    \end{equation}
-    
+\end{equation}
+
 
 where:
 \begin{itemize}
@@ -304,7 +256,7 @@ To address these challenges and ensure the fluency of the resulting text, we inc
 From these top-\(k\) candidates, we then select the most likely token according to the soft sample \(\mathbf{\tilde{y}}\):
 
 \begin{equation}
-y_t = \arg\max_{v \in V_{k_t}} \mathbf{\tilde{y}}_t(v).
+    y_t = \arg\max_{v \in V_{k_t}} \mathbf{\tilde{y}}_t(v).
 \end{equation}
 
 This approach is referred to as "top-k filtering." Text generated through this method tends to exhibit higher fluency, as each token is among the top-\(k\) most probable choices according to the language model. Additionally, to facilitate the satisfaction of specific constraints (e.g., n-gram similarity), we may expand the candidate set \(V_{k_t}\) to include tokens that are critical for meeting those constraints, such as in tasks involving abductive reasoning and lexically constrained decoding.
@@ -328,7 +280,7 @@ COLD decoding inherently produces a fixed-length sequence \(\mathbf{y} = (y_1, \
 The implementation involves initializing parameters and the noise term, setting up the optimizer and scheduler, and executing the optimization loop as follows:
 
 \begin{verbatim}
-# Initialization
+    # Initialization
 y_logits = init_logits
 epsilon = torch.nn.Parameter(torch.zeros_like(y_logits))
 
@@ -345,13 +297,34 @@ optim.zero_grad()
 y_logits_ = y_logits + epsilon
 # Compute loss in a function (not shown)
 if iter < args.num_iters - 1:
-    loss.backward() # Compute gradients
-    optim.step() # Update parameters
+    loss.backward()  # Compute gradients
+    optim.step()  # Update parameters
     scheduler.step()  # Update learning rate
     last_lr = scheduler.get_last_lr()[0]
 \end{verbatim}
 
 This implementation iteratively updates the parameters to minimize the loss function, incorporating noise to aid in exploring the parameter space. The use of an adaptive learning rate scheduler and the Adam optimizer facilitates efficient and effective optimization.
+
+\subsection{Problems in their Implementation}
+
+The use of the Adam optimizer for the Langevin MCMC algorithm is based on the equation:
+
+\begin{equation}
+    \tilde{\boldsymbol{y}}^{(n+1)} \leftarrow \tilde{\boldsymbol{y}}^{(n)} - \eta \nabla_{\tilde{\boldsymbol{y}}} E(\tilde{\boldsymbol{y}}^{(n)}) + \epsilon^{(n)},
+    \label{eq:langevin}
+\end{equation}
+
+However, this approach diverges from the traditional Langevin MCMC methodology. Adam, being an adaptive optimizer, modifies learning rates based on the first and second moments of the gradients, which could interfere with the stochastic nature required by the Langevin dynamics.
+
+In contrast, using \texttt{optim.SGD} with a fixed learning rate and incorporating noise with a specific standard deviation directly into the parameter updates can more faithfully replicate Langevin MCMC. This is because Langevin MCMC requires adding Gaussian noise to the gradient descent step to explore the parameter space more effectively. The standard deviation of this noise is crucial as it determines the "temperature" of the sampling process, influencing how the algorithm explores local minima. Therefore, while Adam may expedite convergence in certain optimization tasks, \texttt{optim.SGD} with carefully calibrated noise and learning rate parameters can better fulfill the requirements of Langevin MCMC, maintaining the balance between exploration and exploitation inherent to the algorithm.
+
+To implement this using \texttt{optim.SGD}, the noise \(\epsilon^{(n)}\) should be sampled from a Gaussian distribution where the variance is proportional to twice the learning rate. The appropriate equation that reflects this requirement is:
+
+\begin{equation}
+\epsilon^{(n)} \sim \mathcal{N}(0, 2\eta)
+\end{equation}
+
+This equation ensures that the injected noise is consistent with the temperature of the Langevin dynamics, thereby facilitating an exploration that mimics the theoretical underpinnings of Langevin MCMC more closely than what is achieved using Adam.
 
 \subsection{Loss Computation Overview}
 
@@ -424,22 +397,6 @@ The reasons for choosing this model are:
     \item The model allows for exact computation of the distribution for small \(N\).
     \item The binary vocabulary simplifies the computation of the transition matrix of MuCoLa exactly and the stationary distribution as well.
 \end{enumerate}
-
-\section{Introduction}
-
-This document explains the implementation of a stochastic optimization algorithm inspired by the Langevin equation. The algorithm is designed to iteratively update parameters to minimize a loss function, incorporating noise to potentially improve exploration of the parameter space.
-
-
-
-\section{Results}
-
-
-\section{Discussion}
-
-
-\section{Conclusion}
-
-
 
 \bibliographystyle{plain}
 \bibliography{ref}

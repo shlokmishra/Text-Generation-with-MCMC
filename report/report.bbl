@@ -10,11 +10,6 @@ Li~Du, Afra Amini, Lucas~Torroba Hennigen, Xinyan~Velocity Yu, Jason Eisner,
 Sachin Kumar, Biswajit Paria, and Yulia Tsvetkov.
 \newblock Gradient-based constrained sampling from language models, 2022.
 
-\bibitem{Pred-structured-data}
-Yann LeCun, Sumit Chopra, Raia Hadsell, Marc'Aurelio Ranzato, and Fu~Jie Huang.
-\newblock {Energy-Based Models}.
-\newblock In {\em {Predicting Structured Data}}. The MIT Press, 07 2007.
-
 \bibitem{cold}
 Lianhui Qin, Sean Welleck, Daniel Khashabi, and Yejin Choi.
 \newblock Cold decoding: Energy-based constrained text generation with langevin

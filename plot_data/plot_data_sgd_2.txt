@@ -1,0 +1,99 @@
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6778,  c_loss_2: 10.7290, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6777,  c_loss_2: 10.7573, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6778,  c_loss_2: 10.1755, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3478, rl_nll_loss: 11.6777,  c_loss_2: 10.3882, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6778,  c_loss_2: 10.0811, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6777,  c_loss_2: 11.2618, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3479, rl_nll_loss: 11.6778,  c_loss_2: 10.0185, lr: 0.1000, |The first-time look back of the first-|
+1, loss: 10.3010, lr_nll_loss: 4.3478, rl_nll_loss: 11.6777,  c_loss_2: 10.7159, lr: 0.1000, |The first-time look back of the first-|
+
+200, loss: 11.0368, lr_nll_loss: 12.3641, rl_nll_loss: 10.6133,  c_loss_2: 7.2100, lr: 0.1000, |The first-time winner, the only stand-|
+200, loss: 11.0368, lr_nll_loss: 9.0063, rl_nll_loss: 13.6463,  c_loss_2: 2.5970, lr: 0.1000, |A field look in the stand with the first look|
+200, loss: 11.0368, lr_nll_loss: 11.2507, rl_nll_loss: 12.8591,  c_loss_2: 3.2080, lr: 0.1000, |The U field of the field look at stand for|
+200, loss: 11.0368, lr_nll_loss: 9.6966, rl_nll_loss: 12.3422,  c_loss_2: 4.4341, lr: 0.1000, |I have field reports to make, and stand-|
+200, loss: 11.0368, lr_nll_loss: 9.9368, rl_nll_loss: 14.0640,  c_loss_2: 6.3731, lr: 0.1000, |The new year is a great field look at a|
+200, loss: 11.0368, lr_nll_loss: 13.2215, rl_nll_loss: 12.5710,  c_loss_2: 2.6506, lr: 0.1000, |In this standup set field trip, stand up|
+200, loss: 11.0368, lr_nll_loss: 10.3452, rl_nll_loss: 13.1757,  c_loss_2: 2.0553, lr: 0.1000, |In his stand look- look- look, the|
+200, loss: 11.0368, lr_nll_loss: 11.1553, rl_nll_loss: 12.8488,  c_loss_2: 2.6438, lr: 0.1000, |I have a lot to field this look stand in|
+
+400, loss: 10.8801, lr_nll_loss: 8.6598, rl_nll_loss: 14.0503,  c_loss_2: 3.1095, lr: 0.1000, |"This was the first look field trip I've|
+400, loss: 10.8801, lr_nll_loss: 8.4464, rl_nll_loss: 14.3451,  c_loss_2: 2.9495, lr: 0.1000, |The first thing to note stand- look at this|
+400, loss: 10.8801, lr_nll_loss: 14.6790, rl_nll_loss: 14.2462,  c_loss_2: 7.5414, lr: 0.1000, |In a new book, the field- stander|
+400, loss: 10.8801, lr_nll_loss: 12.5405, rl_nll_loss: 11.9892,  c_loss_2: 4.6128, lr: 0.1000, |I'm trying out this look for the first look|
+400, loss: 10.8801, lr_nll_loss: 14.1464, rl_nll_loss: 14.8804,  c_loss_2: 1.7727, lr: 0.1000, |I was in a very stand field of stand look|
+400, loss: 10.8801, lr_nll_loss: 8.5197, rl_nll_loss: 11.8266,  c_loss_2: 2.6464, lr: 0.1000, |"We have a very look-forward stand in|
+400, loss: 10.8801, lr_nll_loss: 12.0931, rl_nll_loss: 12.2001,  c_loss_2: 2.8098, lr: 0.1000, |The field stand of a "S.O stand|
+400, loss: 10.8801, lr_nll_loss: 8.7538, rl_nll_loss: 13.9039,  c_loss_2: 5.4596, lr: 0.1000, |I am very proud to field this field. |
+
+600, loss: 12.7790, lr_nll_loss: 8.8194, rl_nll_loss: 13.9911,  c_loss_2: 4.9799, lr: 0.1000, |A new survey of the look-al stand in|
+600, loss: 12.7790, lr_nll_loss: 13.2916, rl_nll_loss: 15.0108,  c_loss_2: 2.8228, lr: 0.1000, |A field trip in the stand of look- stand|
+600, loss: 12.7790, lr_nll_loss: 17.0829, rl_nll_loss: 16.8877,  c_loss_2: 8.1045, lr: 0.1000, |In an field study of a field of study,|
+600, loss: 12.7790, lr_nll_loss: 15.7428, rl_nll_loss: 15.1418,  c_loss_2: 3.8184, lr: 0.1000, |A man is recovering after look look a bullet stand|
+600, loss: 12.7790, lr_nll_loss: 13.9234, rl_nll_loss: 18.8360,  c_loss_2: 8.9193, lr: 0.1000, |The UES field is an area of study that|
+600, loss: 12.7790, lr_nll_loss: 15.5790, rl_nll_loss: 15.6635,  c_loss_2: 5.8724, lr: 0.1000, |The following article contains minor character details and stand-|
+600, loss: 12.7790, lr_nll_loss: 11.4838, rl_nll_loss: 16.5429,  c_loss_2: 7.0608, lr: 0.1000, |In the stand-off with the government of North|
+600, loss: 12.7790, lr_nll_loss: 17.1469, rl_nll_loss: 16.8175,  c_loss_2: 9.6340, lr: 0.1000, |I've always thought I field the worst of a|
+
+800, loss: 12.9087, lr_nll_loss: 12.8058, rl_nll_loss: 16.9498,  c_loss_2: 6.9372, lr: 0.1000, |The field goal unit has a long history of being|
+800, loss: 12.9087, lr_nll_loss: 14.5002, rl_nll_loss: 20.2419,  c_loss_2: 1.1930, lr: 0.1000, |"We look at a stand look at how much|
+800, loss: 12.9087, lr_nll_loss: 14.6862, rl_nll_loss: 18.3129,  c_loss_2: 3.4093, lr: 0.1000, |A woman has died standin field in an apparent|
+800, loss: 12.9087, lr_nll_loss: 17.7133, rl_nll_loss: 16.7647,  c_loss_2: 4.3862, lr: 0.1000, |The new year has been full look forward stand look|
+800, loss: 12.9087, lr_nll_loss: 16.7154, rl_nll_loss: 17.0737,  c_loss_2: 4.6918, lr: 0.1000, |"The best way for us as a field look|
+800, loss: 12.9087, lr_nll_loss: 12.8845, rl_nll_loss: 15.8708,  c_loss_2: 2.4142, lr: 0.1000, |The following is a list and summary of stand up|
+800, loss: 12.9087, lr_nll_loss: 19.4848, rl_nll_loss: 17.2780,  c_loss_2: 6.4055, lr: 0.1000, |The first stand-alone look inside Marvel field field|
+800, loss: 12.9087, lr_nll_loss: 17.1321, rl_nll_loss: 17.5159,  c_loss_2: 6.8132, lr: 0.1000, |The U.S. standoff in the Korean|
+
+1000, loss: 13.4351, lr_nll_loss: 10.2506, rl_nll_loss: 18.7791,  c_loss_2: 5.9143, lr: 0.1000, |" field " : [ " type- stand "|
+1000, loss: 13.4351, lr_nll_loss: 21.7262, rl_nll_loss: 18.0020,  c_loss_2: 3.1549, lr: 0.1000, |The field was so hot, field goal- stand|
+1000, loss: 13.4351, lr_nll_loss: 18.7188, rl_nll_loss: 18.1619,  c_loss_2: 5.2371, lr: 0.1000, |I look back and stand with the best in this|
+1000, loss: 13.4351, lr_nll_loss: 16.1469, rl_nll_loss: 19.8114,  c_loss_2: 6.2725, lr: 0.1000, |The first-round draft selection in the stand look|
+1000, loss: 13.4351, lr_nll_loss: 17.1332, rl_nll_loss: 18.3021,  c_loss_2: 3.5385, lr: 0.1000, |I am so happy that my secret gif field of|
+1000, loss: 13.4351, lr_nll_loss: 14.5400, rl_nll_loss: 15.3801,  c_loss_2: 3.0788, lr: 0.1000, |"I have never seen the like of look of|
+1000, loss: 13.4351, lr_nll_loss: 21.8013, rl_nll_loss: 18.5446,  c_loss_2: 3.3641, lr: 0.1000, |A new poll suggests voters stand to look very field|
+1000, loss: 13.4351, lr_nll_loss: 17.6849, rl_nll_loss: 17.7661,  c_loss_2: 10.6246, lr: 0.1000, |The first day of the standup circuit is a|
+
+1200, loss: 13.3632, lr_nll_loss: 10.2424, rl_nll_loss: 17.7720,  c_loss_2: 4.9341, lr: 0.1000, |" field-type : field " : stand-|
+1200, loss: 13.3632, lr_nll_loss: 20.5337, rl_nll_loss: 18.3619,  c_loss_2: 1.3855, lr: 0.1000, |In field trials in a number look at how stand|
+1200, loss: 13.3632, lr_nll_loss: 18.6127, rl_nll_loss: 19.3208,  c_loss_2: 2.4737, lr: 0.1000, |The look of a stand field in the middle distance|
+1200, loss: 13.3632, lr_nll_loss: 10.9246, rl_nll_loss: 19.9949,  c_loss_2: 5.6757, lr: 0.1000, |In an effort by the Obama White House stand-|
+1200, loss: 13.3632, lr_nll_loss: 15.7964, rl_nll_loss: 15.4848,  c_loss_2: 10.0208, lr: 0.1000, |I was so excited about these cookies. field trip|
+1200, loss: 13.3632, lr_nll_loss: 18.2596, rl_nll_loss: 18.2709,  c_loss_2: 5.5215, lr: 0.1000, |"It field has the look that is look of|
+1200, loss: 13.3632, lr_nll_loss: 19.0505, rl_nll_loss: 18.0915,  c_loss_2: 2.8729, lr: 0.1000, |In the early morning hours, a look of stand|
+1200, loss: 13.3632, lr_nll_loss: 10.5357, rl_nll_loss: 21.3798,  c_loss_2: 7.0405, lr: 0.1000, |The New York Giants have stand-alone lookal|
+
+1400, loss: 13.6391, lr_nll_loss: 22.7681, rl_nll_loss: 19.0964,  c_loss_2: 3.1169, lr: 0.1000, |The U.N.' look to field stand alone|
+1400, loss: 13.6391, lr_nll_loss: 14.3821, rl_nll_loss: 19.4918,  c_loss_2: 2.1610, lr: 0.1000, |I field this question a lot look at the stand|
+1400, loss: 13.6391, lr_nll_loss: 17.3644, rl_nll_loss: 24.2541,  c_loss_2: 0.6273, lr: 0.1000, |The look and feel stand out. look field is|
+1400, loss: 13.6391, lr_nll_loss: 16.2699, rl_nll_loss: 19.7849,  c_loss_2: 7.5043, lr: 0.1000, |The look on the faces and bodies field of field|
+1400, loss: 13.6391, lr_nll_loss: 14.8834, rl_nll_loss: 19.0541,  c_loss_2: 7.0252, lr: 0.1000, |I was born in London look what a London look|
+1400, loss: 13.6391, lr_nll_loss: 22.9460, rl_nll_loss: 19.7385,  c_loss_2: 4.3393, lr: 0.1000, |I field field tests for a lot more lookal|
+1400, loss: 13.6391, lr_nll_loss: 13.4993, rl_nll_loss: 17.2654,  c_loss_2: 3.5638, lr: 0.1000, |A new survey by a field research firm shows stand|
+1400, loss: 13.6391, lr_nll_loss: 16.7566, rl_nll_loss: 23.0059,  c_loss_2: 9.7139, lr: 0.1000, |A man who was arrested stand in field in front|
+
+1600, loss: 14.4304, lr_nll_loss: 21.3216, rl_nll_loss: 20.1731,  c_loss_2: 8.0320, lr: 0.1000, |"The best thing I could possibly be is the|
+1600, loss: 14.4304, lr_nll_loss: 19.7229, rl_nll_loss: 16.5979,  c_loss_2: 3.2014, lr: 0.1000, |" fieldname = @ " look_at stand|
+1600, loss: 14.4304, lr_nll_loss: 14.4670, rl_nll_loss: 19.1025,  c_loss_2: 1.2229, lr: 0.1000, |A look inside a stand alone computer, field tested|
+1600, loss: 14.4304, lr_nll_loss: 20.6791, rl_nll_loss: 22.2706,  c_loss_2: 1.2590, lr: 0.1000, |A look back in the history of stand alone look|
+1600, loss: 14.4304, lr_nll_loss: 20.2685, rl_nll_loss: 20.5034,  c_loss_2: 2.9205, lr: 0.1000, |I was field recording the look-and stand-|
+1600, loss: 14.4304, lr_nll_loss: 23.8401, rl_nll_loss: 21.2192,  c_loss_2: 2.6994, lr: 0.1000, |The stand-off look is the perfect look that|
+1600, loss: 14.4304, lr_nll_loss: 21.5001, rl_nll_loss: 18.7506,  c_loss_2: 2.9902, lr: 0.1000, |I've seen the same field in lookouts stand|
+1600, loss: 14.4304, lr_nll_loss: 16.3240, rl_nll_loss: 21.4379,  c_loss_2: 2.3268, lr: 0.1000, |A man in his early stand up field gear,|
+
+1800, loss: 14.7558, lr_nll_loss: 23.3318, rl_nll_loss: 19.7725,  c_loss_2: 7.1832, lr: 0.1000, |"We're not going anywhere, field hockey!"|
+1800, loss: 14.7558, lr_nll_loss: 21.3612, rl_nll_loss: 19.2931,  c_loss_2: 4.0055, lr: 0.1000, |A new survey of U. field workers finds field|
+1800, loss: 14.7558, lr_nll_loss: 16.3622, rl_nll_loss: 22.8028,  c_loss_2: 4.9367, lr: 0.1000, |In look after children's services, there field staff|
+1800, loss: 14.7558, lr_nll_loss: 21.6291, rl_nll_loss: 23.0510,  c_loss_2: 4.4616, lr: 0.1000, |The new "Star Trek Into Space stand alone film|
+1800, loss: 14.7558, lr_nll_loss: 25.1510, rl_nll_loss: 21.5530,  c_loss_2: 7.2461, lr: 0.1000, |The following article contains information look at how field trip|
+1800, loss: 14.7558, lr_nll_loss: 21.0391, rl_nll_loss: 21.0670,  c_loss_2: 3.4826, lr: 0.1000, |The stand field goal was a special kick field goal|
+1800, loss: 14.7558, lr_nll_loss: 14.6710, rl_nll_loss: 23.4276,  c_loss_2: 3.7044, lr: 0.1000, |The new season has begun field trials in stand-|
+1800, loss: 14.7558, lr_nll_loss: 18.4139, rl_nll_loss: 20.7515,  c_loss_2: 1.0862, lr: 0.1000, |A look into a world stand look field, which|
+
+2000, loss: 14.7372, lr_nll_loss: 16.3515, rl_nll_loss: 20.7933,  c_loss_2: 7.1087, lr: 0.1000, |" look. It is lookin field. Look|
+2000, loss: 14.7372, lr_nll_loss: 20.8003, rl_nll_loss: 20.6197,  c_loss_2: 2.1000, lr: 0.1000, | stand up for the rights, field of vision field|
+2000, loss: 14.7372, lr_nll_loss: 14.6693, rl_nll_loss: 24.5068,  c_loss_2: 5.0796, lr: 0.1000, |In look after the sick or elderly, a home|
+2000, loss: 14.7372, lr_nll_loss: 22.7646, rl_nll_loss: 22.4671,  c_loss_2: 2.4674, lr: 0.1000, |The new season has just begun. field goal and|
+2000, loss: 14.7372, lr_nll_loss: 23.1015, rl_nll_loss: 22.8269,  c_loss_2: 6.9564, lr: 0.1000, |The New Orleans Pelicans are expected to make field goal|
+2000, loss: 14.7372, lr_nll_loss: 24.6021, rl_nll_loss: 25.3060,  c_loss_2: 1.2498, lr: 0.1000, |" stand field field ", // The field of|
+2000, loss: 14.7372, lr_nll_loss: 20.4095, rl_nll_loss: 21.7919,  c_loss_2: 4.4357, lr: 0.1000, |The new season will kick fieldwork look like this|
+2000, loss: 14.7372, lr_nll_loss: 19.8444, rl_nll_loss: 23.4565,  c_loss_2: 3.5762, lr: 0.1000, |A look inside the new $2 field in Google|
+
