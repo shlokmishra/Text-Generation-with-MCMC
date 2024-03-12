@@ -13,6 +13,8 @@ Sachin Kumar, Biswajit Paria, and Yulia Tsvetkov.
 \bibitem{cold}
 Lianhui Qin, Sean Welleck, Daniel Khashabi, and Yejin Choi.
 \newblock Cold decoding: Energy-based constrained text generation with langevin
-  dynamics, 2022.
+  dynamics.
+\newblock {\em Advances in Neural Information Processing Systems},
+  35:9538--9551, 2022.
 
 \end{thebibliography}
