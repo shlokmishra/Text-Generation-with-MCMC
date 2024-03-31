@@ -325,7 +325,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             loss.backward()
             
             # # Before updating y_logits with optimizer, sample z and decide on the update direction
-            sigma = 1.0  
+            sigma = 0.1  
             z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
     
             # Assuming you have a way to calculate grad_y E(y), possibly after loss.backward()
@@ -340,7 +340,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
     
             # Apply update based on decision; ensure no gradient is tracked for this operation
             with torch.no_grad():
-                y_logits += torch.where(update_decision, -z, z)
+                y_logits += torch.where(update_decision, z, -z)
 
             
             # sigma = 1.0  
