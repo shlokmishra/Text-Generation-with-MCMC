@@ -333,7 +333,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             grad_y = y_logits.grad.detach()  # Detach to prevent further gradient computation
         
             # Calculate alpha
-            alpha = 1 / (1 + torch.exp(-z * grad_y))
+            alpha = 1 / (1 + torch.exp(z * grad_y))
     
             # Decide on update direction based on alpha
             update_decision = torch.rand_like(alpha) < alpha  # Boolean tensor for update decision
