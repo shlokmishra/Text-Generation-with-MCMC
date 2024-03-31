@@ -232,7 +232,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
 
     for iter in range(args.num_iters):
         # optim.zero_grad()
-        # y_logits_ = y_logits + epsilon
+        y_logits_ = y_logits 
 
         soft_forward_y = y_logits_ / 0.001
         if args.straight_through:
@@ -322,24 +322,41 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
         if iter < args.num_iters - 1:  # so that the mask_t at the last iteration will not change
             loss.backward()
             
-            # Before updating y_logits with optimizer, sample z and decide on the update direction
+            # # Before updating y_logits with optimizer, sample z and decide on the update direction
+            # sigma = 1.0  
+            # z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
+    
+            # # Assuming you have a way to calculate grad_y E(y), possibly after loss.backward()
+            # # This might require accessing y_logits.grad after detaching it to avoid affecting future gradients
+            # grad_y = y_logits.grad.detach()  # Detach to prevent further gradient computation
+        
+            # # Calculate alpha
+            # alpha = 1 / (1 + torch.exp(-z * grad_y))
+    
+            # # Decide on update direction based on alpha
+            # update_decision = torch.rand_like(alpha) < alpha  # Boolean tensor for update decision
+    
+            # # Apply update based on decision; ensure no gradient is tracked for this operation
+            # with torch.no_grad():
+            #     y_logits += torch.where(update_decision, z, -z)
+
+            
             sigma = 1.0  
             z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
-    
-            # Assuming you have a way to calculate grad_y E(y), possibly after loss.backward()
-            # This might require accessing y_logits.grad after detaching it to avoid affecting future gradients
-            grad_y = y_logits.grad.detach()  # Detach to prevent further gradient computation
-        
-            # Calculate alpha
-            alpha = 1 / (1 + torch.exp(-z * grad_y))
-    
-            # Decide on update direction based on alpha
-            update_decision = torch.rand_like(alpha) < alpha  # Boolean tensor for update decision
-    
-            # Apply update based on decision; ensure no gradient is tracked for this operation
+
+            with torch.no_grad():  # Ensure no gradients are being tracked for this operation
+            grad_y_E = y_logits_.grad  # Assuming this holds the gradient ∇y E(y)
+            Z_grad_y_E = torch.sum(z * grad_y_E)  # Element-wise multiplication and sum
+            alpha = 1 / (1 + torch.exp(-Z_grad_y_E))
+
             with torch.no_grad():
-                y_logits += torch.where(update_decision, z, -z)
-    
+                if torch.bernoulli(torch.tensor([alpha], device='cuda')):  # Sampling with probability alpha
+                    y_logits = y_logits + z
+                else:
+                    y_logits = y_logits - z
+
+
+
 
             # optim.step()
             # scheduler.step()  # turn off the scheduler
