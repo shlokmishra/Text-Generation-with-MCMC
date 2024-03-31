@@ -345,9 +345,9 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
 
             with torch.no_grad():  # Ensure no gradients are being tracked for this operation
-            grad_y_E = y_logits_.grad  # Assuming this holds the gradient ∇y E(y)
-            Z_grad_y_E = torch.sum(z * grad_y_E)  # Element-wise multiplication and sum
-            alpha = 1 / (1 + torch.exp(-Z_grad_y_E))
+                grad_y_E = y_logits_.grad  # Assuming this holds the gradient ∇y E(y)
+                Z_grad_y_E = torch.sum(z * grad_y_E)  # Element-wise multiplication and sum
+                alpha = 1 / (1 + torch.exp(-Z_grad_y_E))
 
             with torch.no_grad():
                 if torch.bernoulli(torch.tensor([alpha], device='cuda')):  # Sampling with probability alpha
