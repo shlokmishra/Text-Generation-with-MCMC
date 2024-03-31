@@ -340,7 +340,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
     
             # Apply update based on decision; ensure no gradient is tracked for this operation
             with torch.no_grad():
-                y_logits += torch.where(update_decision, z, -z)
+                y_logits += torch.where(update_decision, -z, z)
 
             
             # sigma = 1.0  
