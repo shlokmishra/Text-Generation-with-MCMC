@@ -368,13 +368,12 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             for bi in range(args.batch_size):
                 if "abductive" in args.mode or "lexical" in args.mode:
                     print(
-                        "%d, loss: %.4f, lr_nll_loss: %.4f, rl_nll_loss: %.4f,  c_loss_2: %.4f, lr: %.4f, |%s|" % (
+                        "%d, loss: %.4f, lr_nll_loss: %.4f, rl_nll_loss: %.4f,  c_loss_2: %.4f, |%s|" % (
                             iter + 1, loss.item(), lr_nll_loss[bi].item(), rl_nll_loss[bi].item(),
-                            c_loss_2[bi].item(), last_lr, text[bi]))
-                    # print("%d, loss: %.4f, lr_nll_loss: %.4f, rl_nll_loss: %.4f, c_loss_1: %.4f, c_loss_2: %.4f, lr: %.4f, |%s|" % (iter + 1, loss.item(), lr_nll_loss[bi].item(), rl_nll_loss[bi].item(), c_loss_1[bi].item(), c_loss_2[bi].item(), last_lr, text[bi]))
+                            c_loss_2[bi].item(), text[bi]))
                 else:
-                    print("%d, loss: %.4f, lr_nll_loss: %.4f, c_loss: %.4f, lr: %.4f, |%s|" % (
-                    iter + 1, loss.item(), lr_nll_loss[bi].item(), c_loss[bi].item(), last_lr, text[bi]))
+                    print("%d, loss: %.4f, lr_nll_loss: %.4f, c_loss: %.4f, |%s|" % (
+                        iter + 1, loss.item(), lr_nll_loss[bi].item(), c_loss[bi].item(), text[bi]))
 
             if "abductive" in args.mode or "lexical" in args.mode:
                 pass
