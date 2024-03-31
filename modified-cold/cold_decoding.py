@@ -201,18 +201,19 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
                        device=device))
 
     y_logits = init_logits
-    epsilon = torch.nn.Parameter(torch.zeros_like(y_logits))
-    if args.prefix_length > 0:
-        optim = torch.optim.Adam([epsilon, prefix_logits], lr=args.stepsize)
-    else:
-        optim = torch.optim.Adam([epsilon], lr=args.stepsize)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, step_size=args.stepsize_iters,
-                                                gamma=args.stepsize_ratio)
+    # epsilon = torch.nn.Parameter(torch.zeros_like(y_logits))
+    # if args.prefix_length > 0:
+    #     optim = torch.optim.Adam([epsilon, prefix_logits], lr=args.stepsize)
+    # else:
+    #     optim = torch.optim.Adam([epsilon], lr=args.stepsize)
+    # scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, step_size=args.stepsize_iters,
+    #                                             gamma=args.stepsize_ratio)
 
     frozen_len = args.frozen_length
 
     y_logits_ = None
     noise_std = 0.0
+    y_logits.requires_grad_(True)
 
     ## Encode x beforehand
     assert args.prefix_length <= 0, "The current code does not support prefix-length > 0"
@@ -230,8 +231,8 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
     mask_t = None
 
     for iter in range(args.num_iters):
-        optim.zero_grad()
-        y_logits_ = y_logits + epsilon
+        # optim.zero_grad()
+        # y_logits_ = y_logits + epsilon
 
         soft_forward_y = y_logits_ / 0.001
         if args.straight_through:
@@ -322,7 +323,7 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             loss.backward()
             
             # Before updating y_logits with optimizer, sample z and decide on the update direction
-            sigma = 1.0  # Make sure this is defined in your arguments
+            sigma = 1.0  
             z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
     
             # Assuming you have a way to calculate grad_y E(y), possibly after loss.backward()
@@ -341,8 +342,8 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
     
 
             # optim.step()
-            scheduler.step()  # turn off the scheduler
-            last_lr = scheduler.get_last_lr()[0]
+            # scheduler.step()  # turn off the scheduler
+            # last_lr = scheduler.get_last_lr()[0]
 
         if args.verbose and ((iter + 1) % args.print_every == 0 or iter == 0 or iter + 1 == args.num_iters):
             text, _, _ = decode_with_model_topk(
