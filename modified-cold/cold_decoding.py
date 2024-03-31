@@ -212,6 +212,8 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
     frozen_len = args.frozen_length
 
     y_logits_ = None
+    y_logits_ = y_logits 
+    y_logits_.requires_grad_(True)
     noise_std = 0.0
     y_logits.requires_grad_(True)
 
@@ -345,7 +347,6 @@ def decode(model, tokenizer, device, x="", z="", constraints=None, args=None, mo
             z = torch.normal(mean=0.0, std=sigma, size=y_logits.size(), device='cuda')
 
             with torch.no_grad():  # Ensure no gradients are being tracked for this operation
-                y_logits_.requires_grad_(True)
                 grad_y_E = y_logits_.grad  # Assuming this holds the gradient ∇y E(y)
                 Z_grad_y_E = torch.sum(z * grad_y_E)  # Element-wise multiplication and sum
                 alpha = 1 / (1 + torch.exp(-Z_grad_y_E))
