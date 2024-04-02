@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Initialization}
+\PYG{n}{y\PYGZus{}logits} \PYG{o}{=} \PYG{n}{init\PYGZus{}logits}
+\PYG{n}{epsilon} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{nn}\PYG{o}{.}\PYG{n}{Parameter}\PYG{p}{(}\PYG{n}{torch}\PYG{o}{.}\PYG{n}{zeros\PYGZus{}like}\PYG{p}{(}\PYG{n}{y\PYGZus{}logits}\PYG{p}{))}
+
+\PYG{c+c1}{\PYGZsh{} Optimizer and Scheduler Setup}
+\PYG{k}{if} \PYG{n}{args}\PYG{o}{.}\PYG{n}{prefix\PYGZus{}length} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+    \PYG{n}{optim} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{optim}\PYG{o}{.}\PYG{n}{Adam}\PYG{p}{([}\PYG{n}{epsilon}\PYG{p}{,} \PYG{n}{prefix\PYGZus{}logits}\PYG{p}{],} \PYG{n}{lr}\PYG{o}{=}\PYG{n}{args}\PYG{o}{.}\PYG{n}{stepsize}\PYG{p}{)}
+\PYG{k}{else}\PYG{p}{:}
+    \PYG{n}{optim} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{optim}\PYG{o}{.}\PYG{n}{Adam}\PYG{p}{([}\PYG{n}{epsilon}\PYG{p}{],} \PYG{n}{lr}\PYG{o}{=}\PYG{n}{args}\PYG{o}{.}\PYG{n}{stepsize}\PYG{p}{)}
+\PYG{n}{scheduler} \PYG{o}{=} \PYG{n}{torch}\PYG{o}{.}\PYG{n}{optim}\PYG{o}{.}\PYG{n}{lr\PYGZus{}scheduler}\PYG{o}{.}\PYG{n}{StepLR}\PYG{p}{(}\PYG{n}{optimizer}\PYG{o}{=}\PYG{n}{optim}\PYG{p}{,} \PYG{n}{step\PYGZus{}size}\PYG{o}{=}\PYG{n}{args}\PYG{o}{.}\PYG{n}{stepsize\PYGZus{}iters}\PYG{p}{,}
+                                             \PYG{n}{gamma}\PYG{o}{=}\PYG{n}{args}\PYG{o}{.}\PYG{n}{stepsize\PYGZus{}ratio}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Optimization Loop}
+\PYG{n}{optim}\PYG{o}{.}\PYG{n}{zero\PYGZus{}grad}\PYG{p}{()}
+\PYG{n}{y\PYGZus{}logits\PYGZus{}} \PYG{o}{=} \PYG{n}{y\PYGZus{}logits} \PYG{o}{+} \PYG{n}{epsilon}
+\PYG{c+c1}{\PYGZsh{} Compute loss in a function (not shown)}
+\PYG{k}{if} \PYG{n+nb}{iter} \PYG{o}{\PYGZlt{}} \PYG{n}{args}\PYG{o}{.}\PYG{n}{num\PYGZus{}iters} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{:}
+    \PYG{n}{loss}\PYG{o}{.}\PYG{n}{backward}\PYG{p}{()}  \PYG{c+c1}{\PYGZsh{} Compute gradients}
+    \PYG{n}{optim}\PYG{o}{.}\PYG{n}{step}\PYG{p}{()}  \PYG{c+c1}{\PYGZsh{} Update parameters}
+    \PYG{n}{scheduler}\PYG{o}{.}\PYG{n}{step}\PYG{p}{()}  \PYG{c+c1}{\PYGZsh{} Update learning rate}
+    \PYG{n}{last\PYGZus{}lr} \PYG{o}{=} \PYG{n}{scheduler}\PYG{o}{.}\PYG{n}{get\PYGZus{}last\PYGZus{}lr}\PYG{p}{()[}\PYG{l+m+mi}{0}\PYG{p}{]}
+\end{Verbatim}
